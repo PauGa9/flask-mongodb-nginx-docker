@@ -1,0 +1,26 @@
+version: '3.5'
+
+services:
+    api:
+        build: .
+        volumes:
+            - ./:/app
+        working_dir: /app
+        environment:
+            - FLASK_APP=api.py
+        command: flask run --host=0.0.0.0
+
+    webserver:
+        image: nginx:latest
+        ports:
+            - 8000:80
+        volumes:
+            - ./nginx/conf.d/:/etc/nginx/conf.d/
+
+    mongodb:
+        image: mongo
+        volumes:
+            - mongodata:/data/db
+
+volumes:
+    mongodata:
